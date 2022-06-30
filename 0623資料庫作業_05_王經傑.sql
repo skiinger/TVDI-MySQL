@@ -1,13 +1,12 @@
 --掛載資料表
-create database data0606 
-ON (FileName='D:\DB\NorthwindC.mdf')
-FOR ATTACH
+
+sp_attach_db data0606,'D:\DB\NorthwindC.mdf'
 go
 
 use data0606
 
 --1.請統計員工負責的訂單數、銷售產品個數、銷售產品類別個數。
-select 姓名 [員工姓名],count(OC.訂單號碼) '負責訂單數',sum(OD.數量) '銷售產品個數',count(distinct PD.類別編號) '銷售產品類別個數'
+select 姓名 [員工姓名],count(distinct OC.訂單號碼)[負責訂單數],count(distinct OD.產品編號) [銷售產品個數],count(distinct 類別編號) [銷售產品類別個數]
 FROM 員工 E JOIN 訂貨主檔 OC
 on E.員工編號 = OC.員工編號
 JOIN 訂貨明細 OD
@@ -16,7 +15,6 @@ JOIN 產品資料 PD
 on OD.產品編號 = PD.產品編號
 group by 姓名
 go
-
 
 
 --2.請提供1997年業績最好的三名員工。
